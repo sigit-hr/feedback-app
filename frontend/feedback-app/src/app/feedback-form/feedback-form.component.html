@@ -1,1 +1,76 @@
-<p>feedback-form works!</p>
+<div class="form-container">
+  <div *ngIf="toastVisible" class="toast-card">
+    <div class="toast-left-bar"></div>
+
+    <div class="toast-content">
+      <div class="toast-title">
+        <span class="toast-icon">✔</span>
+        Success
+      </div>
+      <div class="toast-message-text">
+        Your feedback has been submitted.
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="form-field">
+      <label for="name">Name (optional)</label>
+      <input id="name" type="text" formControlName="name">
+
+      <div *ngIf="submitted && form.controls['name'].errors" class="error">
+        <div *ngIf="form.controls['name'].errors?.['maxlength']">
+          Name cannot exceed 100 characters.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email (optional)</label>
+      <input id="email" type="email" formControlName="email">
+
+      <div *ngIf="submitted && form.controls['email'].errors" class="error">
+        <div *ngIf="form.controls['email'].errors?.['maxlength']">
+          Email cannot exceed 100 characters.
+        </div>
+        <div *ngIf="form.controls['email'].errors?.['email']">
+          Please enter a valid email address.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="contactType">Contact Type *</label>
+      <select id="contactType" formControlName="contactType">
+        <option value="">-- select type --</option>
+        <option value="GENERAL">General</option>
+        <option value="MARKETING">Marketing</option>
+        <option value="SUPPORT">Support</option>
+      </select>
+
+      <div *ngIf="submitted && form.controls['contactType'].errors" class="error">
+        <div *ngIf="form.controls['contactType'].errors?.['required']">
+          Please select a contact type.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="message">Message *</label>
+      <textarea id="message" rows="4" formControlName="message"></textarea>
+
+      <div *ngIf="submitted && form.controls['message'].errors" class="error">
+        <div *ngIf="form.controls['message'].errors?.['required']">
+          Message is required.
+        </div>
+        <div *ngIf="form.controls['message'].errors?.['maxlength']">
+          Message cannot exceed 1000 characters.
+        </div>
+      </div>
+    </div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+</div>

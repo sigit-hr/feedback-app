@@ -1,0 +1,50 @@
+<div class="admin-container">
+
+  <h2>Feedback Administration</h2>
+
+  <div class="filter-bar">
+    <label for="typeFilter">Filter by type:</label>
+    <select id="typeFilter" [(ngModel)]="contactType" (change)="onFilterChange()">
+      <option value="ALL">All</option>
+      <option value="GENERAL">General</option>
+      <option value="MARKETING">Marketing</option>
+      <option value="SUPPORT">Support</option>
+    </select>
+
+    <label for="sort">Sort by date:</label>
+    <select id="sort" [(ngModel)]="sort" (change)="onSortChange()">
+      <option value="submittedAt,desc">Newest first</option>
+      <option value="submittedAt,asc">Oldest first</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Type</th>
+      <th>Message</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let f of feedback">
+      <td>{{ f.id }}</td>
+      <td>{{ f.submittedAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+      <td>{{ f.name || '—' }}</td>
+      <td>{{ f.email || '—' }}</td>
+      <td>{{ f.contactType }}</td>
+      <td>{{ f.message }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="changePage(-1)" [disabled]="page === 0">Previous</button>
+    <span>Page {{ page + 1 }}</span>
+    <button (click)="changePage(1)" [disabled]="feedback.length < size">Next</button>
+  </div>
+
+</div>
