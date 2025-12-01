@@ -6,13 +6,15 @@ import eu.commision.feedback.rest.dto.FeedbackResponseDto;
 import eu.commision.feedback.service.FeedbackService;
 import eu.commision.feedback.mapper.FeedbackMapper;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/feedback")
-@CrossOrigin
 public class FeedbackController {
 
     private final FeedbackService service;
@@ -25,6 +27,7 @@ public class FeedbackController {
 
     @PostMapping
     public FeedbackResponseDto submit(@Valid @RequestBody FeedbackRequestDto dto) {
+        log.info("Received feedback request: {}", dto);
         var entity = mapper.toEntity(dto);
         var saved = service.submitFeedback(entity);
         return mapper.toDto(saved);
@@ -32,10 +35,11 @@ public class FeedbackController {
 
     @GetMapping
     public Page<FeedbackResponseDto> list(
-            @RequestParam(required = false) ContactType type,
+            @RequestParam(name = "contactType", required = false)  ContactType contactType,
             Pageable pageable
     ) {
-        return service.getFeedback(type, pageable)
+        log.info("Received request to list feedbacks for {}", contactType);
+        return service.getFeedback(contactType, pageable)
                 .map(mapper::toDto);
     }
 }
