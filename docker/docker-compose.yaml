@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: feedback_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: feedbackdb
+      POSTGRES_USER: feedback
+      POSTGRES_PASSWORD: feedback123
+    ports:
+      - "5432:5432"
+    volumes:
+      - feedback_data:/var/lib/postgresql/data
+
+volumes:
+  feedback_data:
